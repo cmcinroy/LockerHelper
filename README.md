@@ -17,5 +17,17 @@ An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [u
 - [ ] Student Assignments
 - [ ] School Twitter Feed
 
+##Technologies
+###Hardware
+- Raspberry Pi Zero
+- legacy small (15") flat screen LCD monitor
+- reflective-tinted acrylic "mirror" (10"x13" x 1/8")
+
+###Software
+- Apache web server
+- PHP (with Composer for dependency management)
+- Javascript
+- HTML/CSS
+
 ##License
 [GNU GPL v3](LICENSE)

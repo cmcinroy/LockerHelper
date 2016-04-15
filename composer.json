@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-4": {"LockerHelper\\": "src/"}
+    },
+    "require": {
+        "guhelski/forecast-php": "1.1.*"
+    }
+}

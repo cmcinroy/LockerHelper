@@ -41,7 +41,7 @@ return [
      * options - options to be passed to weather service
      */
     'Weather' => [
-        'apikey' => '82cd1e623acbd883357e774029626bdf',
+        'apikey' => 'YOUR_FORECAST.IO_KEY',
         'options' => [
             'units' => 'ca',
             'exclude' => 'flags',
@@ -83,7 +83,7 @@ return [
      * secret - secret required for twitter OAuth
      */
     'Twitter' => [
-        'key' => 'M0q4TV2It9zRL5kYN1Cycs5bV',
-        'secret' => 'sRO7LXcTJM903Fujx8B0JpNpQ64KXlLjArMZUJS2HJtQLVSf2R',
+        'key' => 'YOUR_TWITTER_KEY',
+        'secret' => 'YOUR_TWITTER_SECRET',
     ],
 ];

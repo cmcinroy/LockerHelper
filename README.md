@@ -8,3 +8,14 @@ The mirror doubles as an information portal that displays an aggregate of useful
 
 An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [ubiquitous computing](https://en.wikipedia.org/wiki/Ubiquitous_computing).
 
+##Modules
+- [ ] Time/day
+- [ ] Weather
+- [ ] Quote of the Day
+- [ ] Student Timetable/Schedule
+- [ ] Daily School Announcements
+- [ ] Student Assignments
+- [ ] School Twitter Feed
+
+##License
+[GNU GPL v3](LICENSE)

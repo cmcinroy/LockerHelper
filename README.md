@@ -30,4 +30,6 @@ An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [u
 - HTML/CSS
 
 ##License
-[GNU GPL v3](LICENSE)
+LockerHelper is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl.html) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+LockerHelper is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.

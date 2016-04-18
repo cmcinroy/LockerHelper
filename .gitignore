@@ -1,2 +1,4 @@
 $archive/
+..bfg-report/
 vendor/
+local.conf.php

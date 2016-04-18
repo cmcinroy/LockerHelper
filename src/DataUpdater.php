@@ -21,8 +21,11 @@ class DataUpdater
     public function render()
     {
         //TODO render based on Reflection
+        //$reflector = new \ReflectionClass($this);
+        //var_dump($reflector->getDefaultProperties());
+
         // output div tag with class = property name
         //TODO add '.png' extension for property names prefixed with 'img_'
-        return "hello";
+        //return "hello";
     }
 }

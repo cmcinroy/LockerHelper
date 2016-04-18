@@ -33,8 +33,10 @@ class Weather extends DataUpdater
     public function render()
     {
     	//TODO render based on Reflection
-    	var_dump($this);
-    	return parent::render();
+    	//var_dump($this);
+    	$reflector = new \ReflectionClass($this);
+        var_dump($reflector->getDefaultProperties());
+		return parent::render();
     }
 
     // refresh values 
@@ -59,6 +61,7 @@ class Weather extends DataUpdater
 			}
 			$this->day_precip = $this->day_precip / count($day->data);
 			$this->img_day_icon = $day->icon;
+			var_dump($this);
 		}
     }
 

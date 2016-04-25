@@ -9,6 +9,8 @@ var main = {
 	config: null, // configuration info
 	intervalId: undefined,
 	startTime: null,
+	gitHash: undefined,
+	reload: false,
 };
 
 const DAY_MILLIS = 1000 * 60 * 60 * 24;
@@ -74,6 +76,13 @@ main.updateData = function () {
 		// reset the count if we have been running for more than a day
 		this.count = 0;
 		this.startTime = new Date().getTime();
+	}
+
+	// Reload the application if the local git repository has been updated
+	if ( main.reload ) {
+		console.log('***RELOAD***');
+		window.location.reload();
+		window.location.href = window.location.href;
 	}
 }
 		
@@ -147,6 +156,17 @@ main.processData = function (response /*textStatus, jqXHR*/) {
 		// store the latest config info
 		if ( typeof response.config != 'undefined' ) {
 			main.config = response.config;
+		}
+		// Reload the application if the local git repository has been updated
+		if ( typeof main.gitHash == 'undefined' ) {
+			main.gitHash = main.getConfig('gitHash');
+		}
+		console.log(main.gitHash,main.getConfig('gitHash'));
+		if ( typeof main.gitHash != 'undefined' && 
+			typeof main.getConfig('gitHash') != 'undefined' && 
+			main.gitHash !== main.getConfig('gitHash') ) {
+			main.gitHash = main.getConfig('gitHash');
+			main.reload = true;
 		}
 
 		// update time and date

@@ -5,7 +5,7 @@
  */
 namespace LockerHelper;
 
-class Location
+class Location implements \JsonSerializable
 {
     /*
      * coordinates of Rothesay (for testing)
@@ -20,7 +20,24 @@ class Location
     {
         // initialize with specified city or 
         // city from config if none specified
-        $this->init( empty($city) ? Config::read('Location.city') : $city );
+        $this->init( empty($city) ? Config::read('location.city') : $city );
+    }
+
+    public function jsonSerialize()
+    {
+        $json = array();
+        foreach($this as $key => $value)
+        {
+            if (is_object($value))
+            {
+                $json[$key] = json_encode($value);
+            }
+            else
+            {
+                $json[$key] = $value;
+            }
+        }
+        return $json;
     }
 
     public function getLatitude()
@@ -42,12 +59,12 @@ class Location
         if ( empty($city) )
         {
             // get lat/long of current IP address
-            $url = Config::read('Location.geoLocateURL');
+            $url = Config::read('location.geoLocateURL');
         }
         else
         {
             // get lat/long of specified city
-            $url = Config::read('Location.geoCodeURL').urlencode($city);
+            $url = Config::read('location.geoCodeURL').urlencode($city);
         }
 
         $ch = curl_init();
@@ -61,6 +78,7 @@ class Location
         $response = json_decode($response);
 
         //TODO This should be implemented better, perhaps using an abstract class or interface...
+        //     then implement geoLocatedLocation and geoCodedLocation that parse appropriately...
         // parse geolocation response if no city specified
         if ( !empty($response) )
         {

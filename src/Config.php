@@ -96,6 +96,31 @@ class Config
     }
 
     /**
+     * Used to read information stored in Configure. It's not
+     * possible to store `null` values in Configure.
+     *
+     * Usage:
+     * ```
+     * Configure::read('Name'); will return all values for Name
+     * Configure::read('Name.key'); will return only the value of Configure::Name[key]
+     * ```
+     *
+     * @param string|null $var Variable to obtain. Use '.' to access array elements.
+     * @param bool $flat Whether to flatten the config structure into elements with dot-notation.
+     * @return mixed Value stored in configure, or null.
+     */
+    public static function readAll($var = null, $flat = true)
+    {
+        if ($var === null) {
+            return null;
+        }
+        //$var = explode('.', $var);
+        $ret = array();
+        self::getValues($var, static::$_values, $ret, $flat);
+        return $ret;
+    }
+
+    /**
      * Returns true if given variable is set in Configure.
      *
      * @param string $var Variable name to check for
@@ -190,4 +215,31 @@ class Config
             return $value[$current_index];
         }
     }
+
+    /**
+     * Navigate through a config array looking for all matching indicies
+     * @param array $index The index we are searching for
+     * @param array $value The portion of the config array to process
+     * @param array $found (by reference) list of index/value pairs found
+     * @param bool $flat Whether to flatten the config structure into elements with dot-notation.
+     * @param string $parent Name of parent section of config array being processed
+     * @return void
+     */
+    private static function getValues($index, $value, &$found, $flat = false, $parent = null) {
+        foreach ($value as $key => $val) {
+            if (is_array($val)) {
+                self::getValues($index, $val, $found, $flat, $key);
+            }
+            else {
+                if ($key == $index) {
+                    if ($flat) {
+                        $found[is_null($parent) ? $key : $parent . '.' . $key] = $val;
+                    }
+                    else {
+                        $found[is_null($parent) ? $key : $parent . '.' . $key] = $val;
+                    }
+                }
+            }
+        }
+   }
 }

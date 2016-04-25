@@ -26,9 +26,14 @@ if ( is_ajax() ) {
 	// - check interval
 	// - date/time formats
 	// - intervals for all modules
-	// - symbols for all modules
+	// - icons/symbols for all modules
+	// - commit hash for local git repository
+	$gitHash = trim(shell_exec('git rev-parse ' . Config::read('version.refspec')));
 	$retVar['config'] = array('checkInterval' => Config::read('checkInterval')) + 
-		Config::read('time') + Config::readAll('interval') + Config::readAll('symbol');
+		Config::read('time') + 
+		Config::readAll('interval') + 
+		Config::readAll('symbol') +
+		array('gitHash' => $gitHash);
 
 	// Access post data
 	$method = $_POST;

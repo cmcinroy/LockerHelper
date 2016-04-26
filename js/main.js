@@ -157,11 +157,10 @@ main.processData = function (response /*textStatus, jqXHR*/) {
 		if ( typeof response.config != 'undefined' ) {
 			main.config = response.config;
 		}
-		// Reload the application if the local git repository has been updated
+		// Set reload flag if the local git repository has been updated
 		if ( typeof main.gitHash == 'undefined' ) {
 			main.gitHash = main.getConfig('gitHash');
 		}
-		console.log(main.gitHash,main.getConfig('gitHash'));
 		if ( typeof main.gitHash != 'undefined' && 
 			typeof main.getConfig('gitHash') != 'undefined' && 
 			main.gitHash !== main.getConfig('gitHash') ) {
@@ -183,12 +182,22 @@ main.processData = function (response /*textStatus, jqXHR*/) {
 
 		// process quotes data (if it is in the response)
 		if ( typeof response.quotes != 'undefined' ) {
-			main.updateQuote(response.quotes);
+			main.updateQuote(response.quotes, Math.floor((Math.random() * 4)));
+		}
+
+		// process agenda data (if it is in the response)
+		if ( typeof response.agenda != 'undefined' ) {
+			main.updateAgenda(response.agenda);
 		}
 
 		// process announcement data (if it is in the response)
 		if ( typeof response.announcements != 'undefined' ) {
 			main.updateAnnouncements(response.announcements);
+		}
+
+		// process announcement data (if it is in the response)
+		if ( typeof response.events != 'undefined' ) {
+			main.updateEvents(response.events);
 		}
 
 		// process twitter data (if it is in the response)
@@ -232,7 +241,7 @@ main.updateWeather = function ( obj ) {
 	    alt : "img_current_icon", 
 	    title : obj.img_current_icon
 	}));
-	$('#weather #day_summary').empty().append(obj.day_summary);
+	$('#weather #day_summary').updateWithText(obj.day_summary,500);
 	$('#weather #img_precip_icon').empty().append($('<img>', { 
 	    src : "img/" + obj.img_precip_icon + "_sm.png", 
 	    alt : "img_precip_icon", 
@@ -243,36 +252,84 @@ main.updateWeather = function ( obj ) {
 /**
  * Updates the quote component
  */
-main.updateQuote = function ( obj ) {
+main.updateQuote = function ( obj, i ) {
 	//TODO randomize one of the four available recent daily quotes
-	$('#quotes').empty().append('<span class="fa ' + this.getConfig('quotes.symbol') + 
-		'">&nbsp;</span>' + obj[0].description + '<br/>&ndash;' + obj[0].title);
+	// $('#quotes').empty().append('<span class="fa ' + this.getConfig('quotes.symbol') + 
+	// 	'">&nbsp;</span>' + obj[0].description + '<br/>&ndash;' + obj[0].title);
+	var content = '<span class="fa ' + this.getConfig('quotes.symbol') + '">&nbsp;</span>';
+	content += obj[i].description + '<br/>&ndash;' + obj[i].title;
+
+	$('#quotes').updateWithText(content, 2000);
+}
+
+/**
+ * Updates the agenda component
+ */
+main.updateAgenda = function ( obj ) {
+	var span = '<span class="fa ' + this.getConfig('agenda.symbol') + '">&nbsp;</span>';
+	var num = 8;
+	var content = '';
+
+	for (i = 0; i < num; i++) {
+		if (i) {
+			content += '<br/>';
+		}
+		content += span + obj[i].time + '&nbsp;' + obj[i].subject;
+	}
+	$('#agenda').updateWithText(content, 3000);
 }
 
 /**
  * Updates the announcements component
  */
 main.updateAnnouncements = function ( obj ) {
-	$('#announcements').empty().append('<span class="fa ' + this.getConfig('announcements.symbol') + 
-		'">&nbsp;</span>' + obj[0].text + '<br/>');
-	$('#announcements').append('<span class="fa ' + this.getConfig('announcements.symbol') + 
-		'">&nbsp;</span>' + obj[1].text + '<br/>');
-	$('#announcements').append('<span class="fa ' + this.getConfig('announcements.symbol') + 
-		'">&nbsp;</span>' + obj[2].text + '<br/>');
+	var span = '<span class="fa ' + this.getConfig('announcements.symbol') + '">&nbsp;</span>';
+	var num = 3;
+	var content = '';
+
+	for (i = 0; i < num; i++) {
+		if (i) {
+			content += '<br/>';
+		}
+		content += span + obj[i].text;
+	}
+	$('#announcements').updateWithText(content, 4000);
+}
+
+/**
+ * Updates the events component
+ */
+main.updateEvents = function ( obj ) {
+	var span = '<span class="fa ' + this.getConfig('events.symbol') + '">&nbsp;</span>';
+	var content = '';
+
+	if (Array.isArray(obj)) {
+		for (var i in obj) {
+			if (content != '') {
+				content += '<br/>';
+			}
+			content += span + obj[i].date + '&nbsp;' + obj[i].title;
+		}
+
+	}
+	$('#events').updateWithText(content, 3000);
 }
 
 /**
  * Updates the tweets component
  */
 main.updateTweets = function ( obj ) {
-	$('#tweets').empty().append('<span class="fa ' + this.getConfig('tweets.symbol') + 
-		'">&nbsp;</span>' + obj[0].text + '<br/>');
-	$('#tweets').append('<span class="fa ' + this.getConfig('tweets.symbol') + 
-		'">&nbsp;</span>' + obj[1].text + '<br/>');
-	$('#tweets').append('<span class="fa ' + this.getConfig('tweets.symbol') + 
-		'">&nbsp;</span>' + obj[2].text + '<br/>');
-	$('#tweets').append('<span class="fa ' + this.getConfig('tweets.symbol') + 
-		'">&nbsp;</span>' + obj[3].text);
+	var span = '<span class="fa ' + this.getConfig('tweets.symbol') + '">&nbsp;</span>';
+	var num = 4;
+	var content = '';
+
+	for (i = 0; i < num; i++) {
+		if (i) {
+			content += '<br/>';
+		}
+		content += span + obj[i].text;
+	}
+	$('#tweets').updateWithText(content, 4000);
 }
 
 /**

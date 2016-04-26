@@ -7,6 +7,8 @@ namespace LockerHelper;
 
 class Quotes implements \JsonSerializable
 {
+    const NUM_QUOTES = 4;
+
     private $list;
 
     public function __construct()
@@ -29,7 +31,7 @@ class Quotes implements \JsonSerializable
         try {
             $xml = simplexml_load_file(Config::read('quotes.URL'));
 
-            for ($i = 0; $i < 4; $i++) {
+            for ($i = 0; $i < self::NUM_QUOTES; $i++) {
                 $title = (string) $xml->channel->item[$i]->title;
                 $link = (string) $xml->channel->item[$i]->link;
                 $description = (string) $xml->channel->item[$i]->description;

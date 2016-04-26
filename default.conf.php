@@ -9,25 +9,46 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    //'debug' => filter_var((isset($_ENV['DEBUG']) ? $_ENV['DEBUG'] : false), FILTER_VALIDATE_BOOLEAN),
-    'debug' => true,
+    'debug' => filter_var((isset($_ENV['DEBUG']) ? $_ENV['DEBUG'] : false), FILTER_VALIDATE_BOOLEAN),
+
+    /**
+     * Minimum refresh interval (in milliseconds).
+     * This is also a multiplier for component intervals.
+     * e.g. 'checkInterval' => 60000 will perform refresh check every minute
+     *       + Weather.interval => 15 will update weather every 15mins
+     * Component interval can be set to -1 to disable component
+     */
+    'checkInterval' => 60000,
 
     /**
      * Time configuration.
      *
-     * format - specify formatting of the time display
+     * dateFormat - specify date display formatting
+     * timeFormat - specify time display formatting
      */
-    'Time' => [
-        'format' => 'h\uee01mm\nEEEE\nMMMM d',
+    'time' => [
+        // dateFormat for Mirror layout is 'dddd<br/>MMMM DD'
+        'dateFormat' => 'dddd, MMMM DD',
+        'timeFormat' => 'h:mm',
+    ],
+
+    /**
+     * Version configuration.
+     *
+     * refspec - git branch/tag
+     */
+    'version' => [
+        'refspec' => 'HEAD',
     ],
 
     /**
      * Location configuration.
      *
      * city - if specified, will use the city (instead of geolocation by IP address)
-     * geoURL - URL of service to use for IP address geolocation
+     * geoLocateURL - URL of service to use for IP address geolocation
+     * geoCodeURL - URL of service to use for city geocoding
      */
-    'Location' => [
+    'location' => [
         //'city' => 'Rothesay, Canada',
         'city' => null,
         'geoLocateURL' => 'http://geoip.nekudo.com/api/',
@@ -37,10 +58,12 @@ return [
     /**
      * Weather configuration.
      *
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
      * apikey - API key required by weather service
      * options - options to be passed to weather service
      */
-    'Weather' => [
+    'weather' => [
+        'interval' => 15,
         'apikey' => 'YOUR_FORECAST.IO_KEY',
         'options' => [
             'units' => 'ca',
@@ -51,39 +74,95 @@ return [
     /**
      * Quote configuration.
      *
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
+     * URL - URL of the Quote RSS feed
+     * symbol - fontawesome symbol name
      */
-    'Quote' => [
+    'quotes' => [
+        'interval' => 30,
+        'URL' => 'http://feeds.feedburner.com/brainyquote/QUOTEBR',
+        // Art Quote of the Day
+        // 'URL' => 'http://feeds.feedburner.com/brainyquote/QUOTEAR',
+        'symbol' => 'fa-comment-o', 
     ],
 
     /**
-     * Schedule configuration.
+     * Agenda/schedule/timetable configuration.
      *
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
+     * key - id of the Google Sheet
+     * student - name of the student to lookup on the first sheet, to determine class 
+     * class - worksheet that has the appropriate class timetable
+     * symbol - fontawesome symbol name
      */
-    'Schedule' => [
+    'agenda' => [
+        'interval' => 5,
+        'key' => 'YOUR_GOOGLE_SHEET_KEY',
+        'class' => '7-CR',
+        'symbol' => 'fa-calendar', 
     ],
 
     /**
      * Announcements configuration.
      *
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
+     * URL - URL of the school home page
+     * symbol - fontawesome symbol name
      */
-    'Announcements' => [
+    'announcements' => [
+        'interval' => 60,
+        'URL' => 'YOUR_SCHOOL_HOME_PAGE',
+        'symbol' => 'fa-bullhorn', 
     ],
 
     /**
-     * Assignments configuration.
+     * Calendar events (Assignments) configuration.
      *
-     */
-    'Assignments' => [
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
+     * key - Google Calendar API key
+     * id - id of a public Google Calendar
+     * symbol - fontawesome symbol name
+    */
+    'events' => [
+        'interval' => 10,
+        'key' => 'YOUR_GOOGLE_API_KEY',
+        'id' => 'YOUR_GOOGLE_CALENDAR_ID',
+        'symbol' => 'fa-check-square-o', 
     ],
 
     /**
      * Twitter configuration.
      *
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
+     * username - Twitter screen name of the feed to be read
+     * count - Number of tweets to read
+     * feed - Twitter API URL
      * key - key required for twitter OAuth
      * secret - secret required for twitter OAuth
+     * symbol - fontawesome symbol name
      */
-    'Twitter' => [
+    'tweets' => [
+        'interval' => 30,
+        'username' => 'ASD_South',
+        'count' => 4,
+        'feed' => 'https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={$username}&count={$count}&include_rts=1',
         'key' => 'YOUR_TWITTER_KEY',
         'secret' => 'YOUR_TWITTER_SECRET',
+        'bearer' => 'YOUR_TWITTER_BEARER_TOKEN',
+        'symbol' => 'fa-twitter', 
+    ],
+
+    /**
+     * News configuration.
+     *
+     * interval - number of checkIntervals to wait before refresh (-1 = disable)
+      * URL - URL of the news RSS feed
+    * symbol - fontawesome symbol name
+     */
+    'news' => [
+        'interval' => -1,
+        // Associated Press Top Headlines
+        'URL' => 'http://hosted2.ap.org/atom/APDEFAULT/3d281c11a96b4ad082fe88aa0db04305',
+        'symbol' => 'fa-newspaper-o', 
     ],
 ];

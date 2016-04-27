@@ -145,7 +145,7 @@ return [
      */
     'tweets' => [
         'interval' => 30,
-        'username' => 'ASD_South',
+        'username' => 'YOUR_SCHOOL_TWITTER_HANDLE',
         'count' => 4,
         'feed' => 'https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={$username}&count={$count}&include_rts=1',
         'key' => 'YOUR_TWITTER_KEY',

@@ -28,6 +28,15 @@ An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [u
 - PHP (with Composer for dependency management)
 - Javascript
 - HTML/CSS
+- JSON, RSS and XML parsing
+
+###Services
+- JSON [Weather](http://forecast.io/), [Geolocation](http://geoip.nekudo.com/) and [Geocoding](https://developers.google.com/maps/documentation/geocoding/intro) feeds
+- RSS [Quote of the Day](http://www.brainyquote.com/quotes_of_the_day.html) feed
+- Google Sheets [API](https://developers.google.com/google-apps/spreadsheets/) (with OAuth 2.0 API) to access student timetable info stored in a spreadsheet (tabs = classes)
+- Google Calendar [API](https://developers.google.com/google-apps/calendar/) to access a public calendar where Class assignments are stored as events
+- Good ol' HTTP feed (school web site) provides the latest morning announcements
+- Twitter [API] (https://dev.twitter.com/rest/reference/get/statuses/user_timeline) provides the timeline of the school twitter account
 
 ##License
 LockerHelper is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl.html) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

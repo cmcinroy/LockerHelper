@@ -22,6 +22,8 @@ if ( is_ajax() ) {
 	//TODO determine whether you want the interval array indecies to be flattened
 	// var_dump(Config::readAll('interval'));
 
+	//TODO Maintain component object state across calls?
+
 	// Return UI configuration:
 	// - check interval
 	// - date/time formats

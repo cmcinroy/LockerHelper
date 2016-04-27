@@ -90,6 +90,7 @@ return [
      * Agenda/schedule/timetable configuration.
      *
      * interval - number of checkIntervals to wait before refresh (-1 = disable)
+     * authConfig - relativce path to Google API Service Account key auth config file
      * key - id of the Google Sheet
      * student - name of the student to lookup on the first sheet, to determine class 
      * class - worksheet that has the appropriate class timetable
@@ -97,6 +98,7 @@ return [
      */
     'agenda' => [
         'interval' => 5,
+        'authConfig' => 'YOUR_GOOGLE_API_SERVICE_ACCOUNT_KEY_AUTHCONFIG_FILE',
         'key' => 'YOUR_GOOGLE_SHEET_KEY',
         'class' => '7-CR',
         'symbol' => 'fa-calendar', 

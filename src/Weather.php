@@ -5,6 +5,7 @@
  */
 namespace LockerHelper;
 
+// Guilherme Uhelski's PHP wrapper for the Forcast.io API
 use Forecast\Forecast;
 
 class Weather implements \JsonSerializable

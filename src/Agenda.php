@@ -24,7 +24,7 @@ class Agenda implements \JsonSerializable
     {
         // Establish Google client
         $client = new \Google_Client();
-        $client->setAuthConfig(__DIR__ . Config::read('agenda.authConfig'));
+        $client->setAuthConfig(__DIR__ . '/..' . Config::read('agenda.authConfig'));
         $client->setApplicationName(self::APP_NAME);
         $client->setScopes(['https://www.googleapis.com/auth/drive','https://spreadsheets.google.com/feeds']);
         // Authorization

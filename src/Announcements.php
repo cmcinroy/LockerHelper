@@ -27,7 +27,7 @@ class Announcements implements \JsonSerializable
     public function update()
     {
         try {
-            $response = json_decode(file_get_contents('./_archive/announcements.json'));
+            $response = json_decode(file_get_contents('./cache/announcements.json'));
             foreach ($response as $announcement) {
             $a = new Announcement($announcement->title, $announcement->text);
             array_push($this->list, $a);

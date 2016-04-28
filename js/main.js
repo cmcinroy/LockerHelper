@@ -51,7 +51,6 @@ main.updateData = function () {
 	var intervalList = this.getComponentsByInterval();
 	// determine polling interval
 	var delay = this.getConfig('checkInterval');
-	console.log(delay, intervalList.length);
 
 	if (delay > 0) {
 		// if there are any components to be updated
@@ -91,9 +90,9 @@ main.updateData = function () {
  * Determine list of components
  */
 main.getComponentsByInterval = function () {
-	// 1st iteration: all data component should be requested
+	// 1st iteration (or have never been connected): all data components should be requested
 	// subsequent: determined by component interval alignment with count
-	if ( this.count == 0 ) {
+	if ( (this.count == 0) || (this.config == null) ) {
 		return this.components;
 	} else {
 		var refList = new Array();
@@ -103,9 +102,6 @@ main.getComponentsByInterval = function () {
 			// the corresponding component exists on the page AND
 			// the interval value is greater than zero AND
 			// the refresh count is a multiple of the interval value
-			if ((prop == null) || (prop === undefined)) {
-				console.log('prop: ' + prop);
-			}
 			if ( prop.endsWith('.interval') &&
 				 ($.inArray(prop.split('.')[0], this.components) !== -1) &&
 				 this.config[prop] > 0 &&

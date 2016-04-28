@@ -28,12 +28,15 @@ class Announcements implements \JsonSerializable
     {
         try {
             $response = json_decode(file_get_contents('./cache/announcements.json'));
-            foreach ($response as $announcement) {
-            $a = new Announcement($announcement->title, $announcement->text);
-            array_push($this->list, $a);
+            if ( !empty($response) ) {
+                foreach ($response as $announcement) {
+                    $a = new Announcement($announcement->title, $announcement->text);
+                    array_push($this->list, $a);
+                }
             }
         } catch (\Exception $e) {
-            exit($e->getMessage() . "\n");
+            echo $e->getMessage() . "\n";
+            return false;
         }
     }
 

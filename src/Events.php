@@ -85,7 +85,8 @@ class Events implements \JsonSerializable
                 array_push($this->list, $e);
             }
         } catch (\Exception $e) {
-            exit($e->getMessage() . "\n");
+            echo $e->getMessage() . "\n";
+            return false;
         }
     }
 

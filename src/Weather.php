@@ -41,7 +41,7 @@ class Weather implements \JsonSerializable
 		$json = array();
     	foreach($this as $key => $value)
     	{
-        	if ( !is_object($value) )
+        	if ( !is_object($value) && ($value != null) )
         	{
         		$json[$key] = $value;
         	}
@@ -59,28 +59,36 @@ class Weather implements \JsonSerializable
     // refresh values 
     public function update()
     {
-		$response = $this->forecast->get($this->location->getLatitude(), $this->location->getLongitude(), null, Config::read('weather.options'));
-		if ( !empty($response) )
-		{
-			// current info
-			$current = $response->currently;
-			$this->current_temp = strval( round( (float) $current->temperature ) ) . self::TEMP_SUFFIX;
-			$this->current_precip = round( 100 * (float) $current->precipProbability );
-			$this->img_current_icon = $current->icon;
-			// daily info
-			$day = $response->hourly;
-			$this->day_summary = $day->summary;
-			// calculate average over the whole day
-			foreach ( $day->data as $datum )
-			{
-				$this->day_precip += (float) $datum->precipProbability;
-			}
-			$this->day_precip = strval( round( 100 * $this->day_precip / count($day->data) ) ) . self::PRECIP_SUFFIX;
-			$this->img_day_icon = $day->icon;
+    	try {
+			$response = $this->forecast->get($this->location->getLatitude(), $this->location->getLongitude(), null, Config::read('weather.options'));
+		    if ( empty($response->currently)) {
+		    	throw new \Exception('Forecast: weather API unavailable');
+		    } else {
+				// current info
+				$current = $response->currently;
+				$this->current_temp = strval( round( (float) $current->temperature ) ) . self::TEMP_SUFFIX;
+				$this->current_precip = round( 100 * (float) $current->precipProbability );
+				$this->img_current_icon = $current->icon;
+		    }
+			if ( !empty($response->hourly) ) {
+				// daily info
+				$day = $response->hourly;
+				$this->day_summary = $day->summary;
+				// calculate average over the whole day
+				foreach ( $day->data as $datum )
+				{
+					$this->day_precip += (float) $datum->precipProbability;
+				}
+				$this->day_precip = strval( round( 100 * $this->day_precip / count($day->data) ) ) . self::PRECIP_SUFFIX;
+				$this->img_day_icon = $day->icon;
 
-	    	// handle constants
-	    	$this->img_precip_icon = self::IMG_PRECIP;
-		}
+		    	// handle constants
+		    	$this->img_precip_icon = self::IMG_PRECIP;
+		    }
+        } catch (\Exception $e) {
+            echo $e->getMessage() . "\n";
+            return false;
+        }
     }
 
 }

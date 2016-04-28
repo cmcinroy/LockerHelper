@@ -31,16 +31,19 @@ class Quotes implements \JsonSerializable
         try {
             $xml = simplexml_load_file(Config::read('quotes.URL'));
 
-            for ($i = 0; $i < self::NUM_QUOTES; $i++) {
-                $title = (string) $xml->channel->item[$i]->title;
-                $link = (string) $xml->channel->item[$i]->link;
-                $description = (string) $xml->channel->item[$i]->description;
+            if ( !empty($xml) ) {
+                for ($i = 0; $i < self::NUM_QUOTES; $i++) {
+                    $title = (string) $xml->channel->item[$i]->title;
+                    $link = (string) $xml->channel->item[$i]->link;
+                    $description = (string) $xml->channel->item[$i]->description;
 
-                $q = new Quote($title, $description);
-                array_push($this->list, $q);
-            }            
+                    $q = new Quote($title, $description);
+                    array_push($this->list, $q);
+                }            
+            }
         } catch (\Exception $e) {
-            exit($e->getMessage() . "\n");
+            echo $e->getMessage() . "\n";
+            return false;
         }
     }
 

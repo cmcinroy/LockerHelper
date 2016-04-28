@@ -22,6 +22,8 @@ class Agenda implements \JsonSerializable
 
     public function __construct()
     {
+        $this->list = array();
+
         // Establish Google client
         $client = new \Google_Client();
         $client->setAuthConfig(__DIR__ . '/..' . Config::read('agenda.authConfig'));
@@ -31,10 +33,13 @@ class Agenda implements \JsonSerializable
         // Some people have reported needing to use the following setAuthConfig command
         // which requires the email address of your service account (you can get that from the json file)
         // $client->setAuthConfig(["type" => "service_account", "client_email" => "my-service-account@developer.gserviceaccount.com"]);
-        $tokenArray = $client->fetchAccessTokenWithAssertion();
-        $this->accessToken = $tokenArray["access_token"];
-
-        $this->list = array();
+        try {
+            $tokenArray = $client->fetchAccessTokenWithAssertion();
+            $this->accessToken = $tokenArray["access_token"];
+        } catch (\Exception $e) {
+            echo $e->getMessage() . "\n";
+            return false;
+        }
 
 		// update vars
         $this->update();
@@ -54,7 +59,8 @@ class Agenda implements \JsonSerializable
             $id = $this->getSheetIdFromName(Config::read('agenda.class'));
             $this->list = $this->getItemsFromSheet($id);
         } catch (\Exception $e) {
-            exit($e->getMessage() . "\n");
+            echo $e->getMessage() . "\n";
+            return false;
         }
     }
 
@@ -72,16 +78,18 @@ class Agenda implements \JsonSerializable
         $body = $resp->getBody()->getContents();
 
         $xml = simplexml_load_string($body);
-        foreach ($xml->entry as $entry) {
-          if ( $entry->title == $sheetName ) {
-            foreach ($entry->link as $link) {
-                if ( $link['rel'] == 'self' ) {
-                    $retVal = end(explode('/', $link['href']));
-                    break;
+        if ( !empty($xml) ) {
+            foreach ($xml->entry as $entry) {
+              if ( $entry->title == $sheetName ) {
+                foreach ($entry->link as $link) {
+                    if ( $link['rel'] == 'self' ) {
+                        $retVal = end(explode('/', $link['href']));
+                        break;
+                    }
                 }
+                break;
+              }
             }
-            break;
-          }
         }
 
         return $retVal;
@@ -102,22 +110,24 @@ class Agenda implements \JsonSerializable
         $body = $resp->getBody()->getContents();
 
         $xml = simplexml_load_string($body);
-        //TODO ensure that autorecalc works for cells with NOW()-based formulas
-        //TODO otherwise, implement look-ahead logic here
-        $count = 0;
-        foreach ($xml->entry as $entry) {
-            // Cell A20 is the start of the look-ahead results...
-            if ( $entry->title == 'A' . ($count + 20) ) {
-                $subject = (string) $entry->content;
-            }
-            if ( $entry->title == 'B' . ($count + 20) ) {
-                $time = (string) $entry->content;
-                $count++;
-                $a = new AgendaItem($time, $subject);
-                array_push($retVal, $a);
-                // stop after specified # of items
-                if ( $count == self::NUM_ITEMS ) {
-                    break;
+        if ( !empty($xml) ) {
+            //TODO ensure that autorecalc works for cells with NOW()-based formulas
+            //TODO otherwise, implement look-ahead logic here
+            $count = 0;
+            foreach ($xml->entry as $entry) {
+                // Cell A20 is the start of the look-ahead results...
+                if ( $entry->title == 'A' . ($count + 20) ) {
+                    $subject = (string) $entry->content;
+                }
+                if ( $entry->title == 'B' . ($count + 20) ) {
+                    $time = (string) $entry->content;
+                    $count++;
+                    $a = new AgendaItem($time, $subject);
+                    array_push($retVal, $a);
+                    // stop after specified # of items
+                    if ( $count == self::NUM_ITEMS ) {
+                        break;
+                    }
                 }
             }
         }

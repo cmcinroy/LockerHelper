@@ -51,6 +51,7 @@ main.updateData = function () {
 	var intervalList = this.getComponentsByInterval();
 	// determine polling interval
 	var delay = this.getConfig('checkInterval');
+	console.log(delay, intervalList.length);
 
 	if (delay > 0) {
 		// if there are any components to be updated
@@ -102,6 +103,9 @@ main.getComponentsByInterval = function () {
 			// the corresponding component exists on the page AND
 			// the interval value is greater than zero AND
 			// the refresh count is a multiple of the interval value
+			if ((prop == null) || (prop === undefined)) {
+				console.log('prop: ' + prop);
+			}
 			if ( prop.endsWith('.interval') &&
 				 ($.inArray(prop.split('.')[0], this.components) !== -1) &&
 				 this.config[prop] > 0 &&
@@ -131,8 +135,12 @@ main.doAjax = function ( arr ) {
 
 	request.fail(function( jqXHR, textStatus, errorThrown) {
 		// Output error information
-		alert( "Request failed: " + textStatus );
+		console.log("Request failed: " + textStatus );
+		$('#weather #day_summary').updateWithText('Internet connection unavailable',500);
 	});
+
+	// update time and date
+	main.updateTime();
 }
 
 /**
@@ -167,9 +175,6 @@ main.processData = function (response /*textStatus, jqXHR*/) {
 			main.gitHash = main.getConfig('gitHash');
 			main.reload = true;
 		}
-
-		// update time and date
-		main.updateTime();
 
 		//TODO CLEAN-UP
 		// - iterate on response
@@ -345,7 +350,7 @@ main.getConfig = function ( key ) {
 				return this.defaultDateFormat;
 				break;
 			case 'timeFormat':
-				return this.defaultDateFormat;
+				return this.defaultTimeFormat;
 				break;
 			case 'checkInterval':
 				return this.defaultInterval;

@@ -48,9 +48,8 @@ class Tweets implements \JsonSerializable
     try {
       //TODO could add file caching if interval smaller than threshhold
       //TODO could add time per https://wordpress.org/support/topic/can-date-and-time-be-displayed-as-time-since-tweet
-      //TODO *** change back to live feed
-      // $response = json_decode(file_get_contents($this->feed, false, $this->context));
-      $response = json_decode(file_get_contents(dirname(__FILE__).'/../cache/'.'twitter-cache'));
+      $response = json_decode(file_get_contents($this->feed, false, $this->context));
+      // $response = json_decode(file_get_contents(dirname(__FILE__).'/../cache/'.'twitter-cache'));
       foreach ($response as $tweet) {
         //TODO could add sanitizing of text
         // per https://blog.jacobemerick.com/web-development/parsing-twitter-feeds-with-php/

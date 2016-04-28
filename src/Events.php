@@ -2,11 +2,14 @@
 /**
  * Events class
  * Used for providing calendar event data.
+ * Some code/info borrowed from:
+ * - http://spunmonkey.design/display-contents-google-calendar-php/
  */
 namespace LockerHelper;
 
 class Events implements \JsonSerializable
 {
+    const APP_NAME = 'Student Portal';
     const MAX_ITEMS = 8;
 
     private $cal;
@@ -15,7 +18,7 @@ class Events implements \JsonSerializable
     public function __construct()
     {
         $client = new \Google_Client();
-        $client->setApplicationName("Student Portal");
+        $client->setApplicationName(self::APP_NAME);
         $client->setDeveloperKey(Config::read('events.key'));
 
         $this->cal = new \Google_Service_Calendar($client);

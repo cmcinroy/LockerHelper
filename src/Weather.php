@@ -5,6 +5,7 @@
  */
 namespace LockerHelper;
 
+// Guilherme Uhelski's PHP wrapper for the Forcast.io API
 use Forecast\Forecast;
 
 class Weather implements \JsonSerializable
@@ -58,9 +59,7 @@ class Weather implements \JsonSerializable
     // refresh values 
     public function update()
     {
-    	//TODO *** change back to live feed
-		// $response = $this->forecast->get($this->location->getLatitude(), $this->location->getLongitude(), null, Config::read('weather.options'));
-		$response = json_decode(file_get_contents('./_archive/weather_2016-04-14.json'));
+		$response = $this->forecast->get($this->location->getLatitude(), $this->location->getLongitude(), null, Config::read('weather.options'));
 		if ( !empty($response) )
 		{
 			// current info

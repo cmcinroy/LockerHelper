@@ -2,6 +2,9 @@
 /**
  * Agenda class
  * Used for providing Timetable/schedule data.
+ * Some code/info borrowed from:
+ * - http://karl.kranich.org/2015/04/16/google-sheets-api-php/
+ * - http://blog.chapagain.com.np/php-google-spreadsheet-with-oauth-add-edit-delete-view-data/
  */
 namespace LockerHelper;
 
@@ -9,6 +12,7 @@ include_once __DIR__ . '/../vendor/google/apiclient/examples/templates/base.php'
 
 class Agenda implements \JsonSerializable
 {
+    const APP_NAME = 'Student Portal';
     const SHEET_API = 'https://spreadsheets.google.com/feeds/worksheets/{$fileId}/private/full';
     const CELLS_API = 'https://spreadsheets.google.com/feeds/cells/{$fileId}/{$sheetId}/private/basic';
     const NUM_ITEMS = 8;
@@ -20,8 +24,8 @@ class Agenda implements \JsonSerializable
     {
         // Establish Google client
         $client = new \Google_Client();
-        $client->setAuthConfig(__DIR__ . '/../Student Portal-7adc34bd06bd.json');
-        $client->setApplicationName("Student Portal");
+        $client->setAuthConfig(__DIR__ . '/..' . Config::read('agenda.authConfig'));
+        $client->setApplicationName(self::APP_NAME);
         $client->setScopes(['https://www.googleapis.com/auth/drive','https://spreadsheets.google.com/feeds']);
         // Authorization
         // Some people have reported needing to use the following setAuthConfig command

@@ -33,8 +33,8 @@ An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [u
 
 ##Technologies
 ###Hardware
-- Raspberry Pi Zero
-- legacy small (15") flat screen LCD monitor
+- [Raspberry Pi Zero](https://www.raspberrypi.org/blog/raspberry-pi-zero/)
+- legacy small (15") flat screen LCD [monitor](http://www.cnet.com/products/nec-multisync-lcd1545v-lcd-monitor-15-series/specs/#p=nec-multisync-lcd1545v-lcd-monitor-15-lcd1545vbk/)
 - reflective-tinted acrylic "[mirror](http://www.metcalfglassltd.ca/)" (10"x13" x 1/8")
 
 ###Software

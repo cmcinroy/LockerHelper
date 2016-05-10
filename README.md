@@ -8,7 +8,11 @@ A variation on [MagicMirror](https://github.com/MichMich/MagicMirror) by Michael
 Build a “smart” student locker mirror.
 The mirror doubles as an information portal that displays an aggregate of useful data for an individual student.
 
-An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [ubiquitous computing](https://en.wikipedia.org/wiki/Ubiquitous_computing).
+Just like the precursor projects, the objective is accomplished by putting a computer screen behind a partially reflective ("two-way") mirror. A computer with internet access pulls information from various sources and renders an aggregate, single screen  view. By displaying light text on a dark background, the information blends with the image reflected by the mirror.  Thus, the computer augments the utility of the traditional mirror.
+
+The information sources implemented in this project are meant to augment a mirror found in a typical student's locker.
+
+This is an example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [ubiquitous computing](https://en.wikipedia.org/wiki/Ubiquitous_computing).
 
 ##Modules
 - [x] Time/day
@@ -56,6 +60,9 @@ An example of [physical](https://en.wikipedia.org/wiki/Physical_computing) or [u
 The Project Team provided the following specification:
 
 ![Spec sheet](https://raw.githubusercontent.com/wiki/cmcinroy/LockerHelper/images/IMG_20160406_165511_sm.jpg)
+
+##How It Works
+The Raspberry Pi computer boots into its operating system and automatically logs in to the graphical user interface, with the display orientation configured for portrait mode (to be consistent with a typical locker mirror).  An autostart script opens a web browser in fullscreen mode.  The web page displays information provided by the web server software, also running on the computer.  The web server retrieves the raw data from various internet sources and provides it in a consistent format to the web page.  The page automatically updates the data by making requests for the latest data from the server/internet on configurable time intervals.
 
 ##Future
 - data caching
